@@ -19,15 +19,11 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
 
 ## Introduction
 
-
-
 * The most common way in scene text readings is to divide it into text detection and text recognition, which are handled as two separate tasks.
 * In text detection, usually a convolutional neural network is used to extract feature maps from a scene image, and then different decoders are used to decode the regions.
 * Text recognition, a network for **sequential prediction is conducted on top of text regions**, one by one. It **leads to heavy time cost** especially for images with a number of text regions.
 * **It ignores the correlation in visual cues shared in detection and recognition.**
 * **The key to connec detection and recognition is the ROIRotate**, which gets proper features from feature maps according to the oriented detection bounding boxes.
-
-
 
 * The fully convolutional network based oriendted text detection branch is built on top of the feature map to predict the detection boxes.
 * The RoIRotate operator extracts text proposal features corresponding to the detection results from the feature map. 
@@ -148,5 +144,20 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
 
       
 
-    * 
+    * M is the affine transformation matrix. $$h_t, w_t$$ represent height (equals 8 in our setting) and width of feature maps after affine transformation. $$(x,y)$$ represents the coordinates of a point in shared feature maps and $$(t, b, l, r)$$ stands for distance to top, bottom, left, right sides of the text proposal respectively, and $$\theta$$ for the orientation. $$(t, b, l, r)$$ and $$\theta$$ can be given by ground truth or the detection branch.
+
+    * With the transformation parameters, it is easy to produce the <u>final RoI feature</u> using affine transformation.
+      
+      $$
+      \begin{pmatrix} x_i^s \\ y_i^s \\ 1 \end{pmatrix} \quad= \quad M^{-1} \begin{pmatrix} x_i^t \\ y_i^t \\ 1 \end{pmatrix}
+      $$
+
+      and for ∀i ∈ [1...ht], ∀j ∈ [1...wt], ∀c ∈ [1…C],
+
+      $$
+      V^{ c }_{ ij }=\sum _{ n }^{ h_s }{ \sum _{ m }^{ w_s }{ U^{ c }_{ nm }k(x^{ s }_{ ij }-m;\Phi _{ x })k(y^{ s }_{ iJ }-n;\Phi _{ y }) }  }
+      $$
+
+      
+      where $$V^{ c }_{ ij }$$  is the output value at location $$(i, j)$$ in channel $$c$$ and $$U^{ c }_{ nm }$$ is the input value at location $$(n, m)$$ in channel $$c$$. 
 
