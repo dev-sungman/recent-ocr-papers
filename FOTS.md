@@ -99,6 +99,54 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
     
 
     * where a hyper-parameter $$\lambda_{reg}$$ balacnes two losses, which is set to 1 in our experiments.
+      
+
+* **ROIRotate**
+
+  * RoIRotate applies transformation on oriented feature regions to obtain axis-aligned feature maps.
+    
+
+  <img src="./images/FOTS/roi_rotate.png" width="400px" height="150px">
 
   
+
+  * Fix the output height and keep the aspect ratio unchanged to deal with the variation in text length.
+
+  * Compared to RoIPooling and RoIAlign, RoIRotate provides a more general operation for extracting features for regions of interest. 
+
+  * We also compare to **RROI pooling** proposed in RRPN. *RRoI pooling transforms the rotated region to fixed size region through max-pooling,* while we use **bilinear interpolation** to compute the values of the output. <u>This operation avoids misalignments between the RoI and the extracted features, and additionally it makes the lengths of the output features variable, which is more suitable for text recognition</u>.
+
+  * This process can be divided into two steps. 
+
+    * First, affine transformation parameters are computed via predicted or ground truth coordinates of text proposals. Then, affine transformations are applied to shared feature maps for each region respectively, and canonical horizontal feature maps of text regions are obtained. The first step can be formulated as:
+
+      
+      $$
+      t_x = l*cos\theta - t*sin\theta - x
+      $$
+
+      $$
+      t_y = t*cos\theta + l*sin\theta - y
+      $$
+
+      $$
+      s = \frac {h_t}{t+b}
+      $$
+
+      $$
+      w_t = s * (l + r)
+      $$
+
+      
+      $$
+      \\ M\quad =\quad \begin{bmatrix} cos\theta  & -sin\theta  & 0 \\ sin\theta  & cos\theta  & 0 \\ 0 & 0 & 1 \end{bmatrix}\begin{bmatrix} s & 0 & 0 \\ 0 & s & 0 \\ 0 & 0 & 1 \end{bmatrix}\begin{bmatrix} 1 & 0 & t_ x \\ 0 & 1 & t_y \\ 0 & 0 & 1 \end{bmatrix}
+      $$
+
+      $$
+      = s\begin{bmatrix} cos\theta  & -sin\theta  & t_xcos\theta - t_ysin\theta \\ sin\theta  & cos\theta  & t_xsin\theta + t_ycos\theta \\ 0 & 0 & \frac1s \end{bmatrix}
+      $$
+
+      
+
+    * 
 
