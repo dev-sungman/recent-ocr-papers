@@ -170,4 +170,26 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
 * **Text Recognition Branch**
 
   * Considering the length of the label sequence in text regions, input features to LSTM are reduced only twice (to 1/4) along width axis through shared convolutions from the original image.
+
   * Text recognition branch consists of VGG like sequential convolutions, <u>poolings with reduction along height axis only</u>, one bi-directional LSTM, one fully-connection and the final CTC decoder.
+
+  <img src="./images/FOTS/recognition_branch.png" width="350px" height="300px">
+
+  * First, spatial features are fed into several sequential convolutions and poolings along height axis with dimension reduction to extract higher-level features.
+
+  * Next, the extracted higher-level feature maps $$L ∈ R^{C ×H ×W}​$$ are permuted to time major form as a sequence $$l_1,…,l_W ∈ R^{C ×H}​$$ and fed into RNN for encoding. Here we use a bi-directional LSTM, with D=256 output channels per direction, to capture range dependencies of the input sequential features.
+
+  * Then, hidden states $$h_1,…,h_W ∈ R^D$$ calculated at each time step in both directions are summed up and fed into a fully-connection, which gives each state its distribution $$x_t ∈ R^{|S|}$$ over the character classes $$S$$. 
+
+  * To avoid overfitting on small training datasets like ICDAR2015, we add dropout before fully-connection.
+
+  * Finally, CTC is used to transform frame-wise classification scores to label sequence. Given probability distribution $$x_t$$ over $$S$$ of each $$h_t$$, and ground truth label sequence $$y^* = {y_1,…,y_T}, T\ll W$$, the conditional probability of the label $$y^*$$ is the sum of probabilities of all paths $$\pi$$ agreeing with:
+    
+    $$
+    p(y^{ * }|x)\quad =\quad \sum _{ \pi\in B^{-1}(y^*) }^{  }{p(\pi|x)  }
+    $$
+    
+    * where $$B$$ defines a many-to-one map from the set of possible labellings with blanks and repeated labels to $$y^*$$. 
+
+  * The training process
+
