@@ -1,5 +1,5 @@
 ---
-
+html header: <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 ---
 
 # FOTS: Fast Oriented Text Spotting with a Unified Network
@@ -38,7 +38,7 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
 
 ## Methodology
 
-* Overall Architecture
+* **Overall Architecture**
 
   <img src="./images/FOTS/architecture.png" width="1000px" height="200px">
 
@@ -52,14 +52,53 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
 
 <img src="./images/FOTS/shared_conv.png" width="500px" height="150px">
 
-* Text Detection Branch
+* **Text Detection Branch**
+
   * As there are a lot of small text boxes in natural scene images, we *upscale the feautre maps from 1/32 to 1/4 size of the original input image* in shared convolutions.
+
   * After extracting shared features, one convolution is applied to output dense per-pixel predictions of words. 
+
   * The *first channel computes the probability of each pixel being a positive sample*. Similar to EAST, pixels in shrunk version of the original text regions are considered positive. For each positive sample, the *following 4 channels predict its distances to top, bottom, left, right sides of the bounding box* that contains this pixel, and the last channel predict the orientation of the related bounding box. 
+
   * Final detection results are produced by applying **thresholding and NMS** to these positive samples.
+
   * In our experiments, we observe that many patterns similar to text stroke are hard to classify, such as fences, latices, etc. we adopt **online hard example mining(OHEM)** to better distinguish these patterns.
 
+  * The **detection branch loss function is composed of two terms**: text classification and bounding box regression. text classification term can be seen as pixel-wise classification loss for a down-sampled score map. *Only shrunk version of the original text region is considered as the positive area*, while the area between the bounding box and the shrunk version is considered as "NOT CARE", and does not contribute to the loss for the classification.
 
+  * Denote the set of selected positive elements by OHEM in the score map as:
+    
+    $$
+    { L }_{ cls }\quad =\quad \frac { 1 }{ |\Omega | } \sum _{ x\in \Omega  }^{  }{ H({ p }_{ x },{ p }_{ x }^{ * }) }
+    $$
 
+    $$
+    \qquad\qquad\qquad\qquad\qquad\quad\qquad  = \quad \frac { 1 }{ |\Omega | } \sum _{ x\in \Omega  }^{  }{ (-{ p }_{ x }^{ * }log{ p }_{ x }-(1-{ p }_{ x }^{ * })log(1-{ p }_{ x })) }
+    $$
+    
 
+    * where |.| is the number of elements in a set, and $$H({ p }_{ x },{ p }_{ x }^{ * }) $$ represents the cross entropy loss between $$p_x$$, the prediction of the score map, and $$p_x^*$$, the binary label that indicates text or non-text.
+      
+
+  * As for the regression loss, we adopt the IoU loss and the rotation angle loss, since they are robust to variation in object shape, scale and orientation:
+    
+    $$
+    { L }_{ reg }\quad =\quad \frac { 1 }{ |\Omega | } \sum _{ x\in \Omega  }^{  }{IoU(R_x,R_x^*) + \lambda_\theta(1-cos(\theta_x,\theta_x^*))}
+    $$
+    
+
+    * Here, $$IoU(R_x,R_x^*)$$ is the IoU loss between the predicted bounding box $$R_x$$, and the ground truth $$R_x^*$$. 
+    * Second term is rotation angle loss. We set the hyper-parameter $$\lambda_\theta$$ to 10 in experiments.
+      
+
+  * Therefore the full detection loss can be written as:
+    
+    $$
+    L_{detect} = L_{cls} +\lambda_{reg}L_{reg}
+    $$
+    
+
+    * where a hyper-parameter $$\lambda_{reg}$$ balacnes two losses, which is set to 1 in our experiments.
+
+  
 
