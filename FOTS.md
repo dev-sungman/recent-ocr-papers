@@ -186,10 +186,24 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
   * Finally, CTC is used to transform frame-wise classification scores to label sequence. Given probability distribution $$x_t$$ over $$S$$ of each $$h_t$$, and ground truth label sequence $$y^* = {y_1,…,y_T}, T\ll W$$, the conditional probability of the label $$y^*$$ is the sum of probabilities of all paths $$\pi$$ agreeing with:
     
     $$
-    p(y^{ * }|x)\quad =\quad \sum _{ \pi\in B^{-1}(y^*) }^{  }{p(\pi|x)  }
+    p(y^{ * }|x)\quad =\quad \sum _{ \pi\in B^{-1}(y^*) }^{  }{p(\pi|x)  } \qquad(Eq.A)
     $$
     
     * where $$B$$ defines a many-to-one map from the set of possible labellings with blanks and repeated labels to $$y^*$$. 
 
-  * The training process
+  * The training process attempts to maximize the log likelihood of summation of Eq.A over the whole training set. the recognition loss can be formulated as:
+    
+    $$
+    L_{recog} \quad = \quad \frac 1N \sum _{ n=1 }^{N}{log p(y_n^*|x)  }
+    $$
+    
 
+    * Where N is the number of text regions in an input image, and $$y_n^*$$ is the recognition label.
+      
+
+  * Combined with detection loss $$L_{detect}$$ in , the full multi-task loss function is:
+    
+    $$
+    L = L_{detect} + \lambda_{recog}L_{recog}
+    $$
+    where a hyper-parameter $$\lambda_{recog}$$ controls the trade-off between two losses.  $$\lambda_{recog}$$ Is set to 1 in our experiments.
