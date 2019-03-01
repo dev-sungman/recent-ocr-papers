@@ -1,4 +1,4 @@
-# Text Spotter.
+# Optical Character Recognition.
 
 This repo include code review, paper review in text detection, text recognition, text spotting.
 
