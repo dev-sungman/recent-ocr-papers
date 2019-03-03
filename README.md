@@ -23,6 +23,6 @@ This repo include code review, paper review in text detection, text recognition,
 - [ ] SqueezedText: A Real-Time Scene Text Recognition by Binary Convolutional Encoder-Decoder Network (Z.Liu, 18'AAAI)  
 
 ### End-to-End 
-- [ ] FOTS: Fast Oriented Text Spotting with a Unified Network (X.Liu, 18'CVPR)  
+- [X] FOTS: Fast Oriented Text Spotting with a Unified Network (X.Liu, 18'CVPR)  
 
 ## Code Implementation
