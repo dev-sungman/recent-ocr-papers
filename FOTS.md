@@ -1,5 +1,5 @@
 ---
-html header: <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
 ---
 
 # FOTS: Fast Oriented Text Spotting with a Unified Network
@@ -65,21 +65,21 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
   * Denote the set of selected positive elements by OHEM in the score map as:
     
     $$
-    { L }_{ cls }\quad =\quad \frac { 1 }{ |\Omega | } \sum _{ x\in \Omega  }^{  }{ H({ p }_{ x },{ p }_{ x }^{ * }) }
+    { L }_{ cls }\quad =\quad \frac { 1 }{ |\Omega | } \sum _{ x\in \Omega  }^{  }{ H({ p }_{ x },{ p }_{ x }^{ * }) }\qquad(Eq.1)
     $$
 
     $$
-    \qquad\qquad\qquad\qquad\qquad\quad\qquad  = \quad \frac { 1 }{ |\Omega | } \sum _{ x\in \Omega  }^{  }{ (-{ p }_{ x }^{ * }log{ p }_{ x }-(1-{ p }_{ x }^{ * })log(1-{ p }_{ x })) }
+    \qquad\qquad\qquad\qquad\qquad\quad\qquad  = \quad \frac { 1 }{ |\Omega | } \sum _{ x\in \Omega  }^{  }{ (-{ p }_{ x }^{ * }log{ p }_{ x }-(1-{ p }_{ x }^{ * })log(1-{ p }_{ x })) }\qquad(Eq.2)
     $$
     
 
-    * where |.| is the number of elements in a set, and $$H({ p }_{ x },{ p }_{ x }^{ * }) $$ represents the cross entropy loss between $$p_x$$, the prediction of the score map, and $$p_x^*$$, the binary label that indicates text or non-text.
+    * where |.| is the number of elements in a set, and $$H({ p }_{ x },{ p }_{ x }^{ * }) ​$$ represents the cross entropy loss between $$p_x​$$, the prediction of the score map, and $$p_x^*​$$, the binary label that indicates text or non-text.
       
 
   * As for the regression loss, we adopt the IoU loss and the rotation angle loss, since they are robust to variation in object shape, scale and orientation:
     
     $$
-    { L }_{ reg }\quad =\quad \frac { 1 }{ |\Omega | } \sum _{ x\in \Omega  }^{  }{IoU(R_x,R_x^*) + \lambda_\theta(1-cos(\theta_x,\theta_x^*))}
+    { L }_{ reg }\quad =\quad \frac { 1 }{ |\Omega | } \sum _{ x\in \Omega  }^{  }{IoU(R_x,R_x^*) + \lambda_\theta(1-cos(\theta_x,\theta_x^*))}\qquad(Eq.3)
     $$
     
 
@@ -90,7 +90,7 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
   * Therefore the full detection loss can be written as:
     
     $$
-    L_{detect} = L_{cls} +\lambda_{reg}L_{reg}
+    L_{detect} = L_{cls} +\lambda_{reg}L_{reg}\qquad(Eq.4)
     $$
     
 
@@ -118,28 +118,28 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
 
       
       $$
-      t_x = l*cos\theta - t*sin\theta - x
+      t_x = l*cos\theta - t*sin\theta - x\qquad(Eq.5)
       $$
 
       $$
-      t_y = t*cos\theta + l*sin\theta - y
+      t_y = t*cos\theta + l*sin\theta - y\qquad(Eq.6)
       $$
 
       $$
-      s = \frac {h_t}{t+b}
+      s = \frac {h_t}{t+b}\qquad(Eq.7)
       $$
 
       $$
-      w_t = s * (l + r)
+      w_t = s * (l + r)\qquad(Eq.8)
       $$
 
       
       $$
-      \\ M\quad =\quad \begin{bmatrix} cos\theta  & -sin\theta  & 0 \\ sin\theta  & cos\theta  & 0 \\ 0 & 0 & 1 \end{bmatrix}\begin{bmatrix} s & 0 & 0 \\ 0 & s & 0 \\ 0 & 0 & 1 \end{bmatrix}\begin{bmatrix} 1 & 0 & t_ x \\ 0 & 1 & t_y \\ 0 & 0 & 1 \end{bmatrix}
+      \\ M\quad =\quad \begin{bmatrix} cos\theta  & -sin\theta  & 0 \\ sin\theta  & cos\theta  & 0 \\ 0 & 0 & 1 \end{bmatrix}\begin{bmatrix} s & 0 & 0 \\ 0 & s & 0 \\ 0 & 0 & 1 \end{bmatrix}\begin{bmatrix} 1 & 0 & t_ x \\ 0 & 1 & t_y \\ 0 & 0 & 1 \end{bmatrix}\qquad(Eq.9)
       $$
 
       $$
-      = s\begin{bmatrix} cos\theta  & -sin\theta  & t_xcos\theta - t_ysin\theta \\ sin\theta  & cos\theta  & t_xsin\theta + t_ycos\theta \\ 0 & 0 & \frac1s \end{bmatrix}
+      = s\begin{bmatrix} cos\theta  & -sin\theta  & t_xcos\theta - t_ysin\theta \\ sin\theta  & cos\theta  & t_xsin\theta + t_ycos\theta \\ 0 & 0 & \frac1s \end{bmatrix}\qquad(Eq.10)
       $$
 
       
@@ -149,7 +149,7 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
     * With the transformation parameters, it is easy to produce the <u>final RoI feature</u> using affine transformation.
       
       $$
-      \begin{pmatrix} x_i^s \\ y_i^s \\ 1 \end{pmatrix} \quad= \quad M^{-1} \begin{pmatrix} x_i^t \\ y_i^t \\ 1 \end{pmatrix}
+      \begin{pmatrix} x_i^s \\ y_i^s \\ 1 \end{pmatrix} \quad= \quad M^{-1} \begin{pmatrix} x_i^t \\ y_i^t \\ 1 \end{pmatrix}\qquad(Eq.11)
       $$
       
 
@@ -157,7 +157,7 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
 
       
       $$
-      V^{ c }_{ ij }=\sum _{ n }^{ h_s }{ \sum _{ m }^{ w_s }{ U^{ c }_{ nm }k(x^{ s }_{ ij }-m;\Phi _{ x })k(y^{ s }_{ iJ }-n;\Phi _{ y }) }  }
+      V^{ c }_{ ij }=\sum _{ n }^{ h_s }{ \sum _{ m }^{ w_s }{ U^{ c }_{ nm }k(x^{ s }_{ ij }-m;\Phi _{ x })k(y^{ s }_{ iJ }-n;\Phi _{ y }) }  }\qquad(Eq.12)
       $$
       
 
@@ -183,10 +183,10 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
 
   * To avoid overfitting on small training datasets like ICDAR2015, we add dropout before fully-connection.
 
-  * Finally, CTC is used to transform frame-wise classification scores to label sequence. Given probability distribution $$x_t$$ over $$S$$ of each $$h_t$$, and ground truth label sequence $$y^* = {y_1,…,y_T}, T\ll W$$, the conditional probability of the label $$y^*$$ is the sum of probabilities of all paths $$\pi$$ agreeing with:
+  * Finally, CTC is used to transform frame-wise classification scores to label sequence. Given probability distribution $$x_t​$$ over $$S​$$ of each $$h_t​$$, and ground truth label sequence $$y^* = {y_1,…,y_T}, T\ll W​$$, the conditional probability of the label $$y^*​$$ is the sum of probabilities of all paths $$\pi​$$ agreeing with:
     
     $$
-    p(y^{ * }|x)\quad =\quad \sum _{ \pi\in B^{-1}(y^*) }^{  }{p(\pi|x)  } \qquad(Eq.A)
+    p(y^{ * }|x)\quad =\quad \sum _{ \pi\in B^{-1}(y^*) }^{  }{p(\pi|x)  } \qquad(Eq.13)
     $$
     
     * where $$B$$ defines a many-to-one map from the set of possible labellings with blanks and repeated labels to $$y^*$$. 
@@ -194,16 +194,24 @@ SenseTime Group Ltd. Shenzhen Institutes of Advanced Technology, Chinese Academy
   * The training process attempts to maximize the log likelihood of summation of Eq.A over the whole training set. the recognition loss can be formulated as:
     
     $$
-    L_{recog} \quad = \quad \frac 1N \sum _{ n=1 }^{N}{log p(y_n^*|x)  }
+    L_{recog} \quad = \quad \frac 1N \sum _{ n=1 }^{N}{log p(y_n^*|x)  }\qquad(Eq.14)
     $$
     
 
-    * Where N is the number of text regions in an input image, and $$y_n^*$$ is the recognition label.
+    * Where N is the number of text regions in an input image, and $$y_n^*​$$ is the recognition label.
       
 
-  * Combined with detection loss $$L_{detect}$$ in , the full multi-task loss function is:
+  * Combined with detection loss $$L_{detect}​$$ in , the full multi-task loss function is:
     
     $$
-    L = L_{detect} + \lambda_{recog}L_{recog}
+    L = L_{detect} + \lambda_{recog}L_{recog}\qquad(Eq.15)
     $$
-    where a hyper-parameter $$\lambda_{recog}$$ controls the trade-off between two losses.  $$\lambda_{recog}$$ Is set to 1 in our experiments.
+    
+
+    * where a hyper-parameter $$\lambda_{recog}$$ controls the trade-off between two losses.  $$\lambda_{recog}$$ Is set to 1 in our experiments.
+
+
+
+## Conclusion
+
+* A novel RoIRotate operation is proposed to unify detection and recognition into an end-to-end pipeline. <u>By sharing convolutional features, the text recognition step is nearly cost-free, which enables our system to run at real-time speed.</u> 
