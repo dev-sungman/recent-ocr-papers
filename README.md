@@ -26,3 +26,6 @@ This repo include code review, paper review in text detection, text recognition,
 - [X] FOTS: Fast Oriented Text Spotting with a Unified Network (X.Liu, 18'CVPR)  
 
 ## Code Implementation
+
+### TExt Recognition
+2019.03.07 ~ CRNN 
