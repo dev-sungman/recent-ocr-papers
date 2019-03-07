@@ -8,10 +8,13 @@ import torchvision
 import torchvision.transforms as transforms
 
 import os
+import random
+import sys
 import argparse
+from data_loader import CrnnDataLoader
 
 
-def parse_arguments(argv)
+def parse_arguments(argv):
     parser = argparse.ArgumentParser(description='CRNN pytorch')
     
     # data configurations
@@ -43,6 +46,13 @@ def main(args):
     # train dataset
     data = CrnnDataLoader(data_path=args.dataroot, mode="train", transform=transform)
 
+    # model load
+
+    # optimizer
+
+    # loss_function -> CTCLoss
+
+    # epoch 
 if __name__ == '__main__':
     main(parse_arguments(sys.argv[1:]))
 
