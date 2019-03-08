@@ -4,6 +4,8 @@ import os
 import json
 import cv2
 
+from PIL import Image
+
 class CrnnDataLoader():
     def __init__(self, data_path, mode="train", transform=None):
         super().__init__()
@@ -32,6 +34,7 @@ class CrnnDataLoader():
         text = self.config[self.mode][idx]["text"]
 
         img = cv2.imread(os.path.join(self.data_path, name))
+        #img = Image.open(os.path.join(self.data_path, name))
         seq = self.text_to_seq(text)
         
         sample = {"img": img, "seq": seq, "seq_len": len(seq), "aug": self.mode =="train"}
