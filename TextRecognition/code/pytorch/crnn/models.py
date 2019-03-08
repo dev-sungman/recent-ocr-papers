@@ -44,7 +44,6 @@ class CRNN(nn.Module):
                 nn.Conv2d(512, 512, kernel_size=2, stride=1),
                 )
 
-
         self.rnn = nn.Sequential(
                 BidirectionalLSTM(512, 256, 256),
                 BidirectionalLSTM(256, 256, nclass),

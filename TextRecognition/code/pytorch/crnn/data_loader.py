@@ -8,6 +8,7 @@ class CrnnDataLoader():
     def __init__(self, data_path, mode="train", transform=None):
         super().__init__()
         self.data_path = data_path
+        print(self.data_path)
         self.config = json.load(open(os.path.join(data_path, "label.json")))
         self.mode = mode
         self.transform = transform

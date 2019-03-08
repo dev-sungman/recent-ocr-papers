@@ -12,13 +12,13 @@ import random
 import sys
 import argparse
 from data_loader import CrnnDataLoader
-
+from models import CRNN
 
 def parse_arguments(argv):
     parser = argparse.ArgumentParser(description='CRNN pytorch')
     
     # data configurations
-    parser.add_argument('--dataroot', type=str, default=None, help='Path to dataset')
+    parser.add_argument('--dataroot', type=str, default="", help='Path to dataset')
 
     # input image size
     parser.add_argument('--input_size', type=str, default="320x32", help='Input size')
@@ -47,7 +47,9 @@ def main(args):
     data = CrnnDataLoader(data_path=args.dataroot, mode="train", transform=transform)
 
     # model load
-
+    nclass = data.cls_len()
+    print(nclass)
+    net = CRNN(nclass)
     # optimizer
 
     # loss_function -> CTCLoss
