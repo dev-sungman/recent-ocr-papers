@@ -20,6 +20,7 @@ from models import CRNN
 from tqdm import tqdm
 from data_transform import Resize, Rotation, ToTensor
 
+from collate_fn import text_collate
 
 def parse_arguments(argv):
     parser = argparse.ArgumentParser(description='CRNN pytorch')
@@ -81,7 +82,7 @@ def main(args):
 
     while epoch < args.epochs:
         data_loader = torch.utils.data.DataLoader(data, batch_size=args.batch_size, num_workers=4, shuffle=True)
-        iterator = tqdm(data)
+        iterator = tqdm(data_loader)
         iter_count = 0
         
         for sample in iterator:
@@ -94,6 +95,7 @@ def main(args):
                 imgs = imgs.cuda()
 
             preds = net(imgs).cpu()
+            print(preds)
             pred_lens = Variable(Tensor([preds.size(0)] * batch_size).int())
             loss = criterion(preds, labels, pred_lens, label_lens) / batch_size
             loss.backward()

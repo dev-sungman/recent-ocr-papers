@@ -10,7 +10,6 @@ class CrnnDataLoader():
     def __init__(self, data_path, mode="train", transform=None):
         super().__init__()
         self.data_path = data_path
-        print(self.data_path)
         self.config = json.load(open(os.path.join(data_path, "label.json")))
         self.mode = mode
         self.transform = transform
@@ -32,11 +31,13 @@ class CrnnDataLoader():
     def __getitem__(self, idx):
         name = self.config[self.mode][idx]["name"]
         text = self.config[self.mode][idx]["text"]
-
+        
+        #print(name, text)
         img = cv2.imread(os.path.join(self.data_path, name))
+
         #img = Image.open(os.path.join(self.data_path, name))
         seq = self.text_to_seq(text)
-        
+        #print(seq) 
         sample = {"img": img, "seq": seq, "seq_len": len(seq), "aug": self.mode =="train"}
         if self.transform:
             sample = self.transform(sample)
@@ -45,6 +46,6 @@ class CrnnDataLoader():
     def text_to_seq(self, text):
         seq = []
         for c in text:
-            seq.append(self.config["classes"].find(c)+1)
+            seq.append(self.config["classes"].find(c))
         return seq
 
