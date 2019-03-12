@@ -37,7 +37,7 @@ class CrnnDataLoader():
 
         #img = Image.open(os.path.join(self.data_path, name))
         seq = self.text_to_seq(text)
-        #print(seq) 
+        print(seq, len(seq))
         sample = {"img": img, "seq": seq, "seq_len": len(seq), "aug": self.mode =="train"}
         if self.transform:
             sample = self.transform(sample)

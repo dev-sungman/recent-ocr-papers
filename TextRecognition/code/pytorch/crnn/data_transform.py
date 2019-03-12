@@ -6,6 +6,7 @@ class ToTensor(object):
         sample["img"] = torch.from_numpy(sample["img"].transpose((2,0,1))).float()
         sample["seq"] = torch.Tensor(sample["seq"]).int()
         sample["seq_len"] = torch.Tensor(sample["seq_len"]).int()
+        print("len(sample[seq_len])",len(sample["seq_len"]))
         return sample
 
 class Resize(object):

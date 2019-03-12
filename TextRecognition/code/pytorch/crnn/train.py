@@ -84,20 +84,27 @@ def main(args):
         data_loader = torch.utils.data.DataLoader(data, batch_size=args.batch_size, num_workers=4, shuffle=True)
         iterator = tqdm(data_loader)
         iter_count = 0
-        
+       
+        ''' TODO: CTC LOSS '''
         for sample in iterator:
             optimizer.zero_grad()
             imgs = Variable(sample["img"])
             labels = Variable(sample["seq"]).view(-1)
-            label_lens = Variable(sample["seq_len"])
+            label_lens = Variable(sample["seq_len"]).view(-1)
             
             if device == 'cuda':
                 imgs = imgs.cuda()
 
             preds = net(imgs).cpu()
-            print(preds)
-            pred_lens = Variable(Tensor([preds.size(0)] * batch_size).int())
-            loss = criterion(preds, labels, pred_lens, label_lens) / batch_size
+
+            pred_lens = Variable(torch.Tensor(preds.size(0)).int())
+            
+            print("preds:", preds.shape)
+            print("labels:", labels.shape)
+            print("pred_lens", pred_lens.shape)
+            print("label_lens", label_lens.shape)
+            
+            loss = criterion(preds, labels, pred_lens, label_lens)
             loss.backward()
             optimizer.step()
             status = "epoch: {}; loss: {}".format(epoch, loss.data[0])
