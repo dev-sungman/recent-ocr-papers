@@ -1,6 +1,9 @@
 *.DS_Store
 *.swp
 
+*.png
+*.jpg
+
 # python compiled file
 *.pyc
 *.md
