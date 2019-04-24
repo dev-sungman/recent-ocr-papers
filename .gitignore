@@ -3,3 +3,5 @@
 
 # python compiled file
 *.pyc
+*.md
+!README.md
