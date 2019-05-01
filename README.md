@@ -6,11 +6,20 @@ This repo include code review, paper review in text detection, text recognition,
 ## Paper Review
 
 ### Text Detection 
-- [ ] EAST : An Efficient and Accurate Scene Text Detector (X.Zhou, 17'CVPR)
-- [ ] Deep Direct Regression for Multi-Oriented Scene Text Detection (W.He, 17'ICCV)  
-- [ ] Single Shot Text Detector with Regional Attention (P.He, 17'ICCV)  
-- [ ] WeText: Scene Text Detection under Weak Supervision (S.Tian, 17'ICCV)  
-- [ ] Rotation-sensitive Regression for Oriented Scene Text Detection (M.Liao, 18'CVPR)  
+
+* Character-level detection
+  * [ ] Detecting Oriented Text in Natural Images by Linking Segments (B.Shi, 17'CVPR)
+  * [ ] Robust Wide Baseline Stereo from Maximally Stable Extremal Regions  (J.Matas, 17'CVPR)
+  * [ ] WordSup: Exploiting Word Annotations for Character based Text Detection (H.Hu, 17'ICCV)	
+  * [x] CRAFT : Character Region Awareness for Text Detection (Y.Baek, 19'CVPR)
+* Regression-based detection
+* Segmentation-based detection
+* Ambiguous
+  * [ ] EAST : An Efficient and Accurate Scene Text Detector (X.Zhou, 17'CVPR)
+  * [ ] Deep Direct Regression for Multi-Oriented Scene Text Detection (W.He, 17'ICCV)  
+  * [ ] Single Shot Text Detector with Regional Attention (P.He, 17'ICCV)  
+  * [ ] WeText: Scene Text Detection under Weak Supervision (S.Tian, 17'ICCV)  
+  * [ ] Rotation-sensitive Regression for Oriented Scene Text Detection (M.Liao, 18'CVPR)  
 
 ### Text Reocgnition
 - [ ] CRNN : An End-to-End Trainable Neural Network for Image-based Sequence Recognition and Its Application to Scene Text Recognition (B.Shi, 17'TPAMI)
